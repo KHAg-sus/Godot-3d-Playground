@@ -1,0 +1,54 @@
+[gd_scene load_steps=8 format=3 uid="uid://c72quatwgbgmu"]
+
+[ext_resource type="PackedScene" uid="uid://bd3vf1duip37b" path="res://Scenes/table.tscn" id="1_gsjke"]
+[ext_resource type="PackedScene" uid="uid://brvrtifea0lkw" path="res://Scenes/couch.tscn" id="2_oiajy"]
+[ext_resource type="PackedScene" uid="uid://lhdnks86dod7" path="res://Scenes/player.tscn" id="3_mbx1d"]
+[ext_resource type="Script" path="res://Scripts/game_manager.gd" id="4_oww1i"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_gpfjb"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_orwtj"]
+sky_material = SubResource("ProceduralSkyMaterial_gpfjb")
+
+[sub_resource type="Environment" id="Environment_s6eem"]
+background_mode = 2
+sky = SubResource("Sky_orwtj")
+tonemap_mode = 2
+glow_enabled = true
+
+[node name="Main" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_s6eem")
+
+[node name="Objects" type="Node3D" parent="."]
+
+[node name="Table" parent="Objects" instance=ExtResource("1_gsjke")]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.33859, 1.24156, -0.813923)
+
+[node name="Couch" parent="Objects" instance=ExtResource("2_oiajy")]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.40738, 0.916951, 6.51328)
+
+[node name="Player" parent="." instance=ExtResource("3_mbx1d")]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.912334, 1.8634)
+
+[node name="Floor" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.314124, 0)
+use_collision = true
+collision_mask = 7
+size = Vector3(20, 0.5, 20)
+
+[node name="GameManager" type="Node" parent="."]
+script = ExtResource("4_oww1i")
+
+[connection signal="status_couch" from="Objects/Couch" to="GameManager" method="_on_couch_status"]
+[connection signal="player_interact" from="Player" to="GameManager" method="_on_player_interact"]

@@ -1,0 +1,34 @@
+[gd_scene load_steps=5 format=3 uid="uid://brvrtifea0lkw"]
+
+[ext_resource type="ArrayMesh" uid="uid://d18amygx4n8vw" path="res://Textures/couch.obj" id="1_0sl87"]
+[ext_resource type="Script" path="res://Scripts/couch.gd" id="1_hwjpf"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_ip0gy"]
+points = PackedVector3Array(-10.945, -3.18201, -1.35991, 2.8385, 3.14016, 2.27076, 0.979049, 2.45443, 2.32627, -11.2382, 2.92166, -1.81608, 2.8385, -0.616844, -2.19154, -11.488, -3.20047, 2.03578, 2.3691, -3.20047, 2.03578, -11.148, 2.88095, 2.10414, 2.34815, 2.91873, -1.8142, 2.60307, -2.96553, -1.72159, -11.7219, -0.616844, -2.19154, -10.0347, -0.792607, 2.30883, -11.488, -2.96553, -1.72159, 1.14071, -0.791409, 2.30483, -10.1239, 2.25608, 2.34317, 1.84414, -3.18201, -1.35991, 2.69745, 2.75231, -1.85068, -11.1341, -3.27025, 1.71869, -11.4815, -1.24708, 2.13654, 2.02695, -3.27025, 1.71869, 2.59353, -1.24661, 2.13568, 1.23207, 2.25256, 2.33997, -9.86681, 2.4558, 2.32741, 2.84339, 2.81158, 1.97816, -11.4374, -0.584291, 2.12414, -11.6672, -1.27609, -1.87454)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_kbisq"]
+size = Vector3(5.7793, 2.50586, 2.60132)
+
+[node name="Couch" type="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.34224, 0.00159729, -0.0352684)
+collision_layer = 5
+collision_mask = 3
+script = ExtResource("1_hwjpf")
+
+[node name="Couch" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0.021286, 0)
+mesh = ExtResource("1_0sl87")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0)
+shape = SubResource("ConvexPolygonShape3D_ip0gy")
+
+[node name="InteractionZone" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.248615, 0, 0.987618)
+
+[node name="InteractCollision" type="CollisionShape3D" parent="InteractionZone"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54779, 0.288376, -0.935728)
+shape = SubResource("BoxShape3D_kbisq")
+
+[connection signal="body_entered" from="InteractionZone" to="." method="izone_entered"]
+[connection signal="body_exited" from="InteractionZone" to="." method="izone_exited"]
